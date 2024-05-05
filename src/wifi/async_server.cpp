@@ -102,7 +102,7 @@ void server_init() {
   // set up as stand-alone WiFi Access Point with SSID = "Esp32GpsVario", 
   // and no access password is required
   // you can specify an access password if you like below
-  bool result =  WiFi.softAP("Esp32GpsVario", ""); // "" => no password
+  bool result =  WiFi.softAP("Efe-Vario", ""); // "" => no password
   ESP_LOGD(TAG, "AP setup %s",result == true ? "OK" : "failed");
   IPAddress myIP = WiFi.softAPIP();  
   ESP_LOGD(TAG,"Access Point IP address: %s", myIP.toString().c_str());

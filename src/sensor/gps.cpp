@@ -13,7 +13,8 @@ static const char* TAG = "gps";
 static bool ubx_detectUBX(int baudrate);
 static bool ubx_detectNMEA(int baudrate);
 
-const uint8_t GpsUBXNAVPVTHdr[] = {0xB5,0x62,0x01,0x07, 0x5C, 0x00};
+// const uint8_t GpsUBXNAVPVTHdr[] = {0xB5,0x62,0x01,0x07, 0x5C, 0x00}; // M8N icin
+const uint8_t GpsUBXNAVPVTHdr[] = {0xB5,0x62,0x01,0x07, 0x54, 0x00}; 
 
 static int  NumValidHdrBytes;
 static int  GpsState;
@@ -168,7 +169,7 @@ static bool ubx_detectNMEA(int baudrate) {
 	}
 
 
-const uint8_t ubxnavpvthdr[] = {0xB5, 0x62, 0x01, 0x07};
+const uint8_t ubxnavpvthdr[] = {0xB5, 0x62, 0x01, 0x07}; 
 
 static bool ubx_detectUBX(int baudrate) {
    uart_set_baudrate(UartNum, baudrate); 
@@ -310,7 +311,7 @@ void gps_stateMachine()  {
 				   else {
                   gps_updateFlashLogRecord();        
                   IsGpsNavUpdated = 1;
-                  //ESP_LOGD(TAG, "NAV_PVT tow %d",NavPvt.timeOfWeekmS);
+                //   ESP_LOGE(TAG, "NAV_PVT tow %d",NavPvt.pktBuffer);
 	               PktReceivedBytes = 0;
 	           	   GpsState = GPS_STATE_IDLE;
 					   }

@@ -6,13 +6,14 @@
 
 // select barometric sensor option
 // set only one of the following true
-#define USE_MS5611 true
-#define USE_BMP388 false
+#define USE_MS5611 false
+#define USE_BMP388 true
 
 // set true for one-time measurement of parameters 
 // set false for actual application use
 #define BMP388_MEASURE_NOISE    false
 #define MS5611_MEASURE_NOISE    false
+// #define NUM_TEST_SAMPLES 2000
 
 /////////////////////////////////////////////////////////////////////////////////////
 
@@ -68,10 +69,10 @@
 
 // lcd uses HSPI IOMux compatible pins, write-only (no need to reserve MISO pin)
 #define pinHSCLK    14
-#define pinHMOSI    27 
+#define pinHMOSI    13 
 
 #define pinLcdCS    12
-#define pinLcdRST   13
+#define pinLcdRST   27
 #define pinLcdA0    26
 #define pinLcdBklt  33
 
@@ -87,7 +88,9 @@
 #define LCD_BKLT_ON()   {GPIO.out1_w1ts.val = 1 << (pinLcdBklt - 32);}
 #define LCD_BKLT_OFF()  {GPIO.out1_w1tc.val = 1 << (pinLcdBklt - 32);}
 
-#define HSPI_CLK_FREQHZ 4000000
+// #define HSPI_CLK_FREQHZ 8000000
+#define HSPI_CLK_FREQHZ 8000000
+// #define HSPI_CLK_FREQHZ 1000000UL
 
 #define pinLED      2
 
@@ -109,7 +112,7 @@
 // USER-CONFIGURABLE PARAMETER DEFAULTS AND LIMITS
 
 #define UTC_OFFSET_MINS_MIN        (-720)
-#define UTC_OFFSET_MINS_DEFAULT     330
+#define UTC_OFFSET_MINS_DEFAULT     180
 #define UTC_OFFSET_MINS_MAX         720
 
 #define BACKLIT_SECS_MIN             5
@@ -199,7 +202,7 @@
 #define MAG_DECLINATION_DEG_MAX        60
 
 #define SPEAKER_VOLUME_MIN       0
-#define SPEAKER_VOLUME_DEFAULT   2
+#define SPEAKER_VOLUME_DEFAULT   3
 #define SPEAKER_VOLUME_MAX       3
 
 #define LOGTYPE_NONE  0
@@ -254,7 +257,7 @@
 #define KF_Z_MEAS_VARIANCE            200
 #endif
 #if USE_BMP388
-#define KF_Z_MEAS_VARIANCE            150
+#define KF_Z_MEAS_VARIANCE            201
 #endif
 
 // KF4 Acceleration Measurement Noise variance

@@ -1,7 +1,8 @@
 #ifndef GPS_H_
 #define GPS_H_
 
-#define NAV_PVT_PKT_NUM_BYTES   	94
+// #define NAV_PVT_PKT_NUM_BYTES   	94 // M8N icin
+#define NAV_PVT_PKT_NUM_BYTES   	86 // M7N update
 #define GPS_MAX_PKTS             4
 
 
@@ -46,42 +47,81 @@
 #define FLAGS1_HEADING_VALID	0x10
 
 
+// typedef struct NAV_PVT_PKT_ {
+// 	uint32_t  	timeOfWeekmS;
+// 	uint16_t	   utcYear;
+// 	uint8_t		utcMonth;
+// 	uint8_t		utcDay;
+// 	uint8_t		utcHour;
+// 	uint8_t		utcMinute;
+// 	uint8_t		utcSecond;
+// 	uint8_t		validity;
+// 	uint32_t	   timeAccuracyNs;
+// 	int32_t		nanoSeconds;
+// 	uint8_t		fixType;
+// 	uint8_t		flags1;
+// 	uint8_t		flags2;
+// 	uint8_t		numSV;
+// 	int32_t 	   lonDeg7;
+// 	int32_t 	   latDeg7;
+// 	int32_t		heightEllipsoidmm;
+// 	int32_t 	   heightMSLmm;
+// 	uint32_t	   horzAccuracymm;
+// 	uint32_t	   vertAccuracymm;
+// 	int32_t		velNorthmmps;
+// 	int32_t		velEastmmps;
+// 	int32_t		velDownmmps;
+// 	int32_t		groundSpeedmmps;
+// 	int32_t		headingMotionDeg5;
+// 	uint32_t	   speedAccuracymmps;
+// 	uint32_t	   headingAccuracyDeg5;
+// 	uint16_t	   posDOP;
+// 	uint8_t		reserved;
+// 	int32_t		headingDeg5;
+// 	int16_t		magneticDeclinationDeg2;
+// 	uint16_t	   declinationAccuracyDeg2;
+// 	uint8_t	   ckA;
+// 	uint8_t     ckB;
+// } NAV_PVT_PKT;
+
 typedef struct NAV_PVT_PKT_ {
-	uint32_t  	timeOfWeekmS;
-	uint16_t	   utcYear;
-	uint8_t		utcMonth;
-	uint8_t		utcDay;
-	uint8_t		utcHour;
-	uint8_t		utcMinute;
-	uint8_t		utcSecond;
-	uint8_t		validity;
-	uint32_t	   timeAccuracyNs;
-	int32_t		nanoSeconds;
-	uint8_t		fixType;
-	uint8_t		flags1;
-	uint8_t		flags2;
-	uint8_t		numSV;
-	int32_t 	   lonDeg7;
-	int32_t 	   latDeg7;
-	int32_t		heightEllipsoidmm;
-	int32_t 	   heightMSLmm;
-	uint32_t	   horzAccuracymm;
+	uint32_t  	timeOfWeekmS; 
+	uint16_t	   utcYear; 
+	uint8_t		utcMonth; 
+	uint8_t		utcDay; 
+	uint8_t		utcHour; 
+	uint8_t		utcMinute; 
+	uint8_t		utcSecond; 
+	uint8_t		validity; 
+	uint32_t	   timeAccuracyNs; 
+	int32_t		nanoSeconds; 
+	uint8_t		fixType; 
+	uint8_t		flags1; 
+	uint8_t		flags2; 
+	uint8_t		numSV; 
+	int32_t 	   lonDeg7; 
+	int32_t 	   latDeg7; 
+	int32_t		heightEllipsoidmm; 
+	int32_t 	   heightMSLmm; 
+	uint32_t	   horzAccuracymm; 
 	uint32_t	   vertAccuracymm;
-	int32_t		velNorthmmps;
-	int32_t		velEastmmps;
+	int32_t		velNorthmmps; 
+	int32_t		velEastmmps; 
 	int32_t		velDownmmps;
-	int32_t		groundSpeedmmps;
-	int32_t		headingMotionDeg5;
-	uint32_t	   speedAccuracymmps;
-	uint32_t	   headingAccuracyDeg5;
-	uint16_t	   posDOP;
-	uint8_t		reserved;
-	int32_t		headingDeg5;
-	int16_t		magneticDeclinationDeg2;
-	uint16_t	   declinationAccuracyDeg2;
-	uint8_t	   ckA;
-	uint8_t     ckB;
+	int32_t		groundSpeedmmps; 
+	int32_t		headingMotionDeg5; 
+	uint32_t	   speedAccuracymmps; 
+	uint32_t	   headingAccuracyDeg5; 
+	uint16_t	   posDOP; 
+	uint8_t		reserved; 
+	uint8_t	   ckA; 
+	uint8_t     ckB; 
 } NAV_PVT_PKT;
+
+
+
+
+
 
 typedef union NAV_PVT_ {
    NAV_PVT_PKT nav;

@@ -10,17 +10,17 @@ accelVariance [50,150] 120
 
 # Miscellaneous
 backlitSecs [5,60] 30
-utcOffsetMins [-720,720] 330
+utcOffsetMins [-720,720] 180
 gyroOffsetLimit1000DPS [25,200] 150
 trackIntervalSecs [1,60] 3
 gpsStableDOP [3,15] 10
 glideRatioIIR [80,99] 90
 trackStartThresholdm [0,100] 10
 magDeclinationdeg [-60,60] 0
-speakerVolume [0,3] 2
+speakerVolume [0,3] 3
 logType [NONE,GPS,IBG]  GPS
 waypointRadiusm [5,20000] 50
 altitudeDisplay [GPS,BARO] GPS
 btMsgType [LK8,XCT] LK8
-btMsgFreqHz [0,10] 0
+btMsgFreqHz [0,10] 10
 lcdContrast [1,10] 3

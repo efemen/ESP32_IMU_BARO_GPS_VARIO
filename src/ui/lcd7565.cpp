@@ -22,53 +22,81 @@ static void lcd_set_page_col(int page, int col);
 void lcd_init(uint8_t brightness) {
     FramePage = 0;
     FrameCol = 0;
-	LCD_CS_LO();
+
+	lcd_send_cmd(SSD1306_DISPLAYOFF);         // 0xAE
+	lcd_send_cmd(SSD1306_SETDISPLAYCLOCKDIV); // 0xD5
+	lcd_send_cmd(0x80); // the suggested ratio 0x80
+	// lcd_send_cmd(0x40);
+	// lcd_send_cmd(SSD1306_SETMULTIPLEX); // 0xA8
+
+	lcd_send_cmd(SSD1306_SETCOMPINS);
+	lcd_send_cmd(0x12);
+	lcd_send_cmd(SSD1306_SETCONTRAST);
+	lcd_send_cmd(0x80); //0xFF
+	lcd_send_cmd(SSD1306_SETPRECHARGE);
+	lcd_send_cmd(0x22);
+
+	lcd_send_cmd(SSD1306_SETVCOMDETECT); // 0xDB
+	lcd_send_cmd(0x40);
+	lcd_send_cmd(SSD1306_DISPLAYALLON_RESUME); // 0xA4
+	lcd_send_cmd(SSD1306_NORMALDISPLAY);       // 0xA6
+	lcd_send_cmd(SSD1306_DISPLAYON);
+
+	lcd_send_cmd(SSD1306_PAGEADDR);
+	lcd_send_cmd(0);                      // Page start address
+	lcd_send_cmd(0x8);                   // Page end (not really, but works here)
+	lcd_send_cmd(SSD1306_COLUMNADDR); 
+	lcd_send_cmd(0); // Column start address
+	lcd_send_cmd(63); 
+
+
+	lcd_clear();
+	// LCD_CS_LO();
 	
-	LCD_RST_LO();
-	delayMs(100);
-	LCD_RST_HI();
+	// LCD_RST_LO();
+	// delayMs(100);
+	// LCD_RST_HI();
 	
-    // LCD bias select
-    lcd_send_cmd(CMD_SET_BIAS_7);
-    //    lcd_send_cmd(CMD_SET_BIAS_9);
+    // // LCD bias select
+    // lcd_send_cmd(CMD_SET_BIAS_7);
+    // //    lcd_send_cmd(CMD_SET_BIAS_9);
 
-    // adc reverse and com normal for correct orientation
-    // ADC select
-    lcd_send_cmd(CMD_SET_ADC_REVERSE);
-    //lcd_send_cmd(CMD_SET_ADC_NORMAL);
-    // COM select
-    lcd_send_cmd(CMD_SET_COM_NORMAL);
-    //lcd_send_cmd(CMD_SET_COM_REVERSE);
+    // // adc reverse and com normal for correct orientation
+    // // ADC select
+    // lcd_send_cmd(CMD_SET_ADC_REVERSE);
+    // lcd_send_cmd(CMD_SET_ADC_NORMAL);
+    // // COM select
+    // lcd_send_cmd(CMD_SET_COM_NORMAL);
+    // lcd_send_cmd(CMD_SET_COM_REVERSE);
 
-    // Initial display line
-    lcd_send_cmd(CMD_SET_DISP_START_LINE);
+    // // Initial display line
+    // lcd_send_cmd(CMD_SET_DISP_START_LINE);
 
-    // turn on voltage converter (VC=1, VR=0, VF=0)
-    lcd_send_cmd(CMD_SET_POWER_CONTROL | 0x4);
-    // wait for 50% rising
+    // // turn on voltage converter (VC=1, VR=0, VF=0)
+    // lcd_send_cmd(CMD_SET_POWER_CONTROL | 0x4);
+    // // wait for 50% rising
+    // delayMs(50);
+
+    // // turn on voltage regulator (VC=1, VR=1, VF=0)
+    // lcd_send_cmd(CMD_SET_POWER_CONTROL | 0x6);
+    // // wait >=50ms
+    // delayMs(50);
+
+    // // turn on voltage follower (VC=1, VR=1, VF=1)
+    // lcd_send_cmd(CMD_SET_POWER_CONTROL | 0x7);
+    // // wait
+    // delayMs(10);
+
+    // // set lcd operating voltage (regulator resistor, ref voltage resistor)
+    // lcd_send_cmd(CMD_SET_RESISTOR_RATIO | 0x6);
+	// lcd_send_cmd(CMD_DISPLAY_ON);
+
+	// lcd_send_cmd(CMD_SET_ALLPTS_NORMAL);
+
+    // lcd_send_cmd(CMD_SET_VOLUME_FIRST);
+    // lcd_send_cmd(CMD_SET_VOLUME_SECOND | (brightness & 0x3f));
+
     delayMs(50);
-
-    // turn on voltage regulator (VC=1, VR=1, VF=0)
-    lcd_send_cmd(CMD_SET_POWER_CONTROL | 0x6);
-    // wait >=50ms
-    delayMs(50);
-
-    // turn on voltage follower (VC=1, VR=1, VF=1)
-    lcd_send_cmd(CMD_SET_POWER_CONTROL | 0x7);
-    // wait
-    delayMs(10);
-
-    // set lcd operating voltage (regulator resistor, ref voltage resistor)
-    lcd_send_cmd(CMD_SET_RESISTOR_RATIO | 0x6);
-	lcd_send_cmd(CMD_DISPLAY_ON);
-
-	lcd_send_cmd(CMD_SET_ALLPTS_NORMAL);
-
-    lcd_send_cmd(CMD_SET_VOLUME_FIRST);
-    lcd_send_cmd(CMD_SET_VOLUME_SECOND | (brightness & 0x3f));
-
-    delayMs(50);
-    lcd_clear();
     }
 	
    

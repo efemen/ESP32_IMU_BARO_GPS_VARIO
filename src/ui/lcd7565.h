@@ -14,6 +14,12 @@
 #define CENTER    9998
 #define LCD_DATA 	0x00
 
+#define init1 0xAE
+#define init2 0xD5
+#define init3 0x80
+#define init4 0xA8
+
+
 #define CMD_DISPLAY_OFF   			0xAE
 #define CMD_DISPLAY_ON    			0xAF
 
@@ -53,6 +59,27 @@
 #define CMD_SET_BOOSTER_6  			3
 #define CMD_NOP  					   0xE3
 #define CMD_TEST  					0xF0
+
+#define SSD1306_MEMORYMODE 0x20          ///< See datasheet
+#define SSD1306_COLUMNADDR 0x21          ///< See datasheet
+#define SSD1306_PAGEADDR 0x22            ///< See datasheet
+#define SSD1306_SETCONTRAST 0x81         ///< See datasheet
+#define SSD1306_CHARGEPUMP 0x8D          ///< See datasheet
+#define SSD1306_SEGREMAP 0xA0            ///< See datasheet
+#define SSD1306_DISPLAYALLON_RESUME 0xA4 ///< See datasheet
+#define SSD1306_DISPLAYALLON 0xA5        ///< Not currently used
+#define SSD1306_NORMALDISPLAY 0xA6       ///< See datasheet
+#define SSD1306_INVERTDISPLAY 0xA7       ///< See datasheet
+#define SSD1306_SETMULTIPLEX 0xA8        ///< See datasheet
+#define SSD1306_DISPLAYOFF 0xAE          ///< See datasheet
+#define SSD1306_DISPLAYON 0xAF           ///< See datasheet
+#define SSD1306_COMSCANINC 0xC0          ///< Not currently used
+#define SSD1306_COMSCANDEC 0xC8          ///< See datasheet
+#define SSD1306_SETDISPLAYOFFSET 0xD3    ///< See datasheet
+#define SSD1306_SETDISPLAYCLOCKDIV 0xD5  ///< See datasheet
+#define SSD1306_SETPRECHARGE 0xD9        ///< See datasheet
+#define SSD1306_SETCOMPINS 0xDA          ///< See datasheet
+#define SSD1306_SETVCOMDETECT 0xDB       ///< See datasheet
 
 
 extern uint8_t FrameBuf[FRAME_WIDTH*NUM_PAGES];   // 128x64 lcd

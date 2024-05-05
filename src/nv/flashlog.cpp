@@ -34,8 +34,8 @@ void flashlog_erase(uint32_t untilAddress) {
 	
 int flashlog_init(void ) {
 	uint16_t flashID = spiflash_readID();
-	if (flashID != 0xEF17) {
-		ESP_LOGE(TAG, "Winbond W25Q128FVSG ID [expected EF17] = %04X", flashID);
+	if (flashID != 0xEF16) {
+		ESP_LOGE(TAG, "Winbond W25Q64FVSG ID [expected EF16] = %04X", flashID);
 		return -1;
 		}
 	spiflash_globalUnprotect();

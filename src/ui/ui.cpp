@@ -868,11 +868,11 @@ bool ui_optionsEventHandler(void)  {
 				case SEL_BTMSG_FREQ : if (opt.misc.btMsgFreqHz > BT_MSG_FREQ_HZ_MIN  ) opt.misc.btMsgFreqHz--;
 				break;
 
-				case SEL_LCD_CONTRAST : if (opt.misc.lcdContrast > LCD_CONTRAST_MIN  ) {
-					opt.misc.lcdContrast--;
-				    lcd_send_cmd(CMD_SET_VOLUME_FIRST);
-				    lcd_send_cmd(CMD_SET_VOLUME_SECOND | (opt.misc.lcdContrast & 0x3f));
-					}
+				// case SEL_LCD_CONTRAST : if (opt.misc.lcdContrast > LCD_CONTRAST_MIN  ) {
+				// 	opt.misc.lcdContrast--;
+				//     lcd_send_cmd(CMD_SET_VOLUME_FIRST);
+				//     lcd_send_cmd(CMD_SET_VOLUME_SECOND | (opt.misc.lcdContrast & 0x3f));
+				// 	}
 				break;
  	      	  	}
 		  	}
@@ -954,12 +954,12 @@ bool ui_optionsEventHandler(void)  {
 				case SEL_BTMSG_FREQ : if (opt.misc.btMsgFreqHz < BT_MSG_FREQ_HZ_MAX  ) opt.misc.btMsgFreqHz++;
 				break;
 
-				case SEL_LCD_CONTRAST : if (opt.misc.lcdContrast < LCD_CONTRAST_MAX  ) {
-					opt.misc.lcdContrast++;
-				    lcd_send_cmd(CMD_SET_VOLUME_FIRST);
-				    lcd_send_cmd(CMD_SET_VOLUME_SECOND | (opt.misc.lcdContrast & 0x3f));
-					}
-				break;
+				// case SEL_LCD_CONTRAST : if (opt.misc.lcdContrast < LCD_CONTRAST_MAX  ) {
+				// 	opt.misc.lcdContrast++;
+				//     lcd_send_cmd(CMD_SET_VOLUME_FIRST);
+				//     lcd_send_cmd(CMD_SET_VOLUME_SECOND | (opt.misc.lcdContrast & 0x3f));
+				// 	}
+				// break;
 		      	  }
 	      	  }
 		else { // ParDisplaySel == 0

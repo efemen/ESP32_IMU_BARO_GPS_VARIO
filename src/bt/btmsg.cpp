@@ -1,5 +1,8 @@
 #include "common.h"
-#include <BluetoothSerial.h>
+// #include <BluetoothSerial.h>
+#include <BLEDevice.h>
+#include <BLEUtils.h>
+#include <BLEServer.h>
 #include "config.h"
 #include "btmsg.h"
 #include "sensor/gps.h"
@@ -11,38 +14,56 @@
 #endif
 #include "ui/ui.h"
 
+using namespace std;
+
 static const char* TAG = "btmsg";
 
-BluetoothSerial* pSerialBT = NULL;
+bool deviceConnected = false;
+BLECharacteristic *pCharacteristic = NULL;
 
-void callback(esp_spp_cb_event_t event, esp_spp_cb_param_t *param){
-	if(event == ESP_SPP_SRV_OPEN_EVT){
-		ESP_LOGD(TAG, "BT client Connected");
-		}
-	if(event == ESP_SPP_CLOSE_EVT ){
-		ESP_LOGD(TAG, "BT client disconnected");
-		}
-	}
+#define SERVICE_UUID        "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
+#define CHARACTERISTIC_UUID "beb5483e-36e1-4688-b7f5-ea07361b26a8"
+
+
+class MyServerCallbacks: public BLEServerCallbacks {
+    void onConnect(BLEServer* pServer) {
+      deviceConnected = true;
+    };
+
+    void onDisconnect(BLEServer* pServer) {
+      deviceConnected = false;
+	  pServer->getAdvertising()->start();
+    }
+};
+
 
 bool btmsg_init(){
-	pSerialBT = new BluetoothSerial;
-	if (pSerialBT == NULL) {
-		ESP_LOGE(TAG, "Error creating BluetoothSerial instance");
-		return false; 
-		}
-	pSerialBT->register_callback(callback);
-  	if(!pSerialBT->begin("ESP32-BT-Vario")){
-    	ESP_LOGE(TAG, "Error initializing ESP32-BT-Vario");
-		return false;
-  		}	
-	else{
-    	ESP_LOGD(TAG, "ESP32-BT-Vario initialized");
-		return true;
-  		}
+	BLEDevice::init("Efe-Vario");  // set the device name
+	BLEServer *pServer = BLEDevice::createServer();
+	pServer->setCallbacks(new MyServerCallbacks());
+	BLEService *pService = pServer->createService(SERVICE_UUID);
+	pCharacteristic = pService->createCharacteristic(
+											CHARACTERISTIC_UUID,
+											BLECharacteristic::PROPERTY_READ |
+											BLECharacteristic::PROPERTY_WRITE
+										);
+
+	pService->start();
+	pCharacteristic->setValue("");
+	// BLEAdvertising *pAdvertising = pServer->getAdvertising();  // this still is working for backward compatibility
+	BLEAdvertising *pAdvertising = BLEDevice::getAdvertising();
+	pAdvertising->addServiceUUID(SERVICE_UUID);
+	pAdvertising->setScanResponse(true);
+	pAdvertising->setMinPreferred(0x06);  // functions that help with iPhone connections issue
+	pAdvertising->setMinPreferred(0x12);
+	BLEDevice::startAdvertising();
+
+	return true;
 	}
 
 void btmsg_tx_message(const char* szmsg) {
-	pSerialBT->print(szmsg);
+	// ESP_LOGE(TAG, "%s", szmsg);
+	pCharacteristic->setValue(szmsg);
 	}
 
 static uint8_t btmsg_nmeaChecksum(const char *szNMEA){

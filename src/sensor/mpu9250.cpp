@@ -172,6 +172,7 @@ int mpu9250_config(){
    // check the WHO AM I byte, expected value is 0x71 (decimal 113) or 0x73 (decimal 115)
    if ((mpu9250_whoAmI() != 113)&&(mpu9250_whoAmI() != 115)){
       ESP_LOGE(TAG, "whoami error");
+      ESP_LOGE(TAG, "%d", mpu9250_whoAmI);
       return -5;
       }
    // enable accelerometer and gyro

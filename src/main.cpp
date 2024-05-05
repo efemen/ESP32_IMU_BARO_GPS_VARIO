@@ -126,6 +126,7 @@ static void ui_task(void *pvParameter) {
     while(1) {
 		if (IsGpsNavUpdated) {
 			IsGpsNavUpdated = false;
+            // ESP_LOGI(TAG, "GPS_NAV UPDATED");
             counter++;
             if (counter >= 5) {
                 counter = 0;
@@ -186,7 +187,7 @@ static void vario_taskConfig() {
     if (mpu9250_config() < 0) {
         ESP_LOGE(TAG, "error MPU9250 config");
 		lcd_printlnf(true,3,"MPU9250 config failed");
-        while (1) {delayMs(100);};
+        // while (1) {delayMs(100);};
         }
 
     btn_clear();
@@ -355,16 +356,17 @@ static void vario_task(void *pvParameter) {
         if (baroCounter >= 10) { // 10*2mS = 20mS elapsed, this is the configured sampling period for BMP388
             baroCounter = 0;     
             bmp388_sample();
+            // ESP_LOGE(TAG, "Sample = %d", ZCmSample_BMP388/100.0f);
             // KF4 uses the acceleration data in the update phase
             float zAccelAverage = ringbuf_averageNewestSamples(10); 
-            kalmanFilter4_predict(kfTimeDeltaUSecs/1000000.0f);
-            kalmanFilter4_update(ZCmSample_BMP388, zAccelAverage, (float*)&KFAltitudeCm, (float*)&KFClimbrateCps);
+            kalmanFilter4d_predict(kfTimeDeltaUSecs/1000000.0f);
+            kalmanFilter4d_update(ZCmSample_BMP388, zAccelAverage, (float*)&KFAltitudeCm, (float*)&KFClimbrateCps);
             kfTimeDeltaUSecs = 0.0f;
             // LCD display shows damped climbrate
             DisplayClimbrateCps = (DisplayClimbrateCps*(float)opt.vario.varioDisplayIIR + KFClimbrateCps*(100.0f - (float)opt.vario.varioDisplayIIR))/100.0f; 
             int32_t audioCps = INTEGER_ROUNDUP(KFClimbrateCps);
             if (IsSpeakerEnabled) {
-                beeper_beep(audioCps);                
+                vaudio_tick_handler(audioCps);                
                 }
 		    if ((opt.misc.logType == LOGTYPE_IBG) && FlashLogMutex) {
 		        if ( xSemaphoreTake( FlashLogMutex, portMAX_DELAY )) {
@@ -474,8 +476,8 @@ static void main_task(void* pvParameter) {
     vspi_config(pinVSCLK, pinVMOSI, pinVMISO, VSPI_CLK_CONFIG_FREQHZ);
     if (flashlog_init() < 0) {
 	    ESP_LOGE(TAG, "Spi flash log error");
-	    lcd_printlnf(true,3,"Flash Error");		
-	    while (1) {delayMs(100);}
+	    lcd_printlnf(true, 3,"Flash Error");		
+	    // while (1) {delayMs(100);}
 	    }
 
     lcd_printlnf(true,3,"Data log : %d %% used", DATALOG_PERCENT_USED()); 
@@ -520,7 +522,7 @@ static void main_task(void* pvParameter) {
     counter = 300;
     while (counter--) {
         lcd_printlnf(true,4,"btn0 for wifi cfg: %ds",(counter+50)/100);
-        if (BTN0() == LOW) {
+        if (BTN0() == LOW) { // MAKE LOW
             ESP_LOGI(TAG,"btn0 Pressed, starting WiFi AP and web server");
             IsServer = 1;
             break;
@@ -530,13 +532,13 @@ static void main_task(void* pvParameter) {
     if (IsServer) { // Wifi Configuration mode
         lcd_clear_frame();
         lcd_printlnf(false,0,"WiFi Access Point :");
-        lcd_printlnf(false,1," \"ESP32GpsVario\"");
+        lcd_printlnf(false,1," \"Efe-Vario\"");
         lcd_printlnf(false,3,"Web Page :");
         lcd_printlnf(false,4," http://esp32.local");
         lcd_printlnf(true,5," 192.168.4.1");
-        ESP_LOGI(TAG, "Wifi access point ESP32GpsVario starting...");
+        ESP_LOGI(TAG, "Wifi access point Efe-Vario starting...");
         WiFi.mode(WIFI_AP);
-        WiFi.softAP("ESP32GpsVario");
+        WiFi.softAP("Efe-Vario");
         IPAddress myIP = WiFi.softAPIP();
         ESP_LOGI(TAG,"WiFi Access Point IP address: %s", myIP.toString().c_str());
         LCD_BKLT_OFF();
